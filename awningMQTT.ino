@@ -264,8 +264,8 @@ void AwningControl() {
         digitalWrite(pbbutton, LOW);
         digitalWrite(pbpower, LOW);
         Serial.println("**awning button released**");
-        mqttClient.publish(topic_status_relay, message_status_relay[0], true);
-        mqttClient.publish(topic_control_relay, message_control_relay[0], true); // clear control msg
+        mqttClient.publish(topic_status_relay, message_status_relay[1], true);
+        mqttClient.publish(topic_control_relay, message_control_relay[1], true); // clear control msg
         AwningPosition();
         relayMillis = currentMillis;
     } else {
@@ -543,6 +543,12 @@ void setup(){
     mqttRefreshConfig();
 
     // clean-up
+        if(mqttClient.connected()) {
+        mqttClient.publish(topic_status_position, message_status_position[awningPosition], true);
+        mqttClient.publish(topic_control_reset, message_control_reset[0], true);
+        mqttClient.publish(topic_status_relay, message_status_relay[1], true);
+        mqttClient.publish(topic_control_relay, message_control_relay[1], true); // clear control msg
+    }
     Serial.println(F("Boot complete."));
     delay(1000);
 }
