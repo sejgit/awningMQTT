@@ -3,6 +3,7 @@
  *
  *  Written for an ESP8266 Sonoff Wifi switch
  *  --fqbn esp8266:8266:generic
+ *  remember to put in program mode with BTN2 on power-up
  *
  *  init   SeJ 03 09 2019 specifics to my application
  *  update SeJ 03 24 2019 change to relay
