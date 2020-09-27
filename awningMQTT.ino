@@ -1,5 +1,5 @@
 /*
- *  Awning control & Living room temperature (not implemented)
+ *  Awning control
  *
  *  Written for an ESP8266 Sonoff Wifi switch
  *  --fqbn esp8266:8266:generic
