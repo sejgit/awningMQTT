@@ -12,6 +12,7 @@
  *  update SeJ 07 03 2020 modifiy hb to one character, last will, monitor
  *  update SeJ 07 08 2020 move to MQTT only removing REST ISY
  *  update SeJ 09 24 2020 with learnings from FishtankOTA
+ *  touch  SeJ 01 03 2021 making OTA easier with Espota
  */
 
 #include <ESP8266WiFi.h>
@@ -67,7 +68,7 @@ time_t local;
  * Web Server
  */
 WiFiServer server(80);
-String ServerTitle = "Jenkins Living Room Awning";
+String ServerTitle = "Jenkins Living Rm Awning";
 
 
 /*
