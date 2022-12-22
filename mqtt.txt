@@ -1,0 +1,14 @@
+[
+  {
+    "id": "awning",
+    "type": "switch",
+    "status_topic": "sej/awning/status/relay",
+    "cmd_topic": "sej/awning/control/relay"
+  },
+  {
+    "id": "awninghb",
+    "type": "switch",
+    "status_topic": "sej/awning/status/hb",
+    "cmd_topic": "sej/awning/control/null"
+  }
+]
