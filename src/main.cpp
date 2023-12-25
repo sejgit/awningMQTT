@@ -13,6 +13,7 @@
  *  update SeJ 07 08 2020 move to MQTT only removing REST ISY
  *  update SeJ 09 24 2020 with learnings from FishtankOTA
  *  touch  SeJ 01 03 2021 making OTA easier with Espota
+ *  remove SeJ 12 25 2023 web server & start using this version again
  */
 
 #include <ESP8266WiFi.h>
@@ -62,13 +63,6 @@ const char* defaultTime = "00:00:00";
 char stringTime[10];
 int oldmin = 99;
 time_t local;
-
-
-/*
- * Web Server
- */
-WiFiServer server(80);
-String ServerTitle = "Jenkins Living Rm Awning";
 
 
 /*
@@ -165,8 +159,6 @@ boolean initWifi(int tries = 2, int waitTime = 2) {
         return false;
     }
     else {
-        // Starting the web server
-        server.begin();
         return true;
     }
 }
@@ -361,51 +353,6 @@ void saveConfig() {
         f.flush();
         f.close();
         Serial.println(F("Saved values."));
-    }
-}
-
-
-/* Web Client
- * Listening for new clients & serve them
- */
-void webClient() {
-    WiFiClient client = server.available();
-    if (client) {
-        Serial.println(F("New client"));
-        // bolean to locate when the http request ends
-        boolean blank_line = true;
-        while (client.connected()) {
-            if (client.available()) {
-                char c = client.read();
-                if (c == '\n' && blank_line) {
-                    client.println(F("HTTP/1.1 200 OK"));
-                    client.println(F("Content-Type: text/html"));
-                    client.println(F("Connection: close"));
-                    client.println();
-                    // web page that displays temperature
-                    client.println(F("<!DOCTYPE HTML><html><head></head><body><h1>"));
-                    client.println(ServerTitle);
-                    client.println(F("</h1><h3>Awning Position: "));
-                    client.println(awningPosition, BIN);
-                    client.println(F("</h3><h3>"));
-                    client.println(stringTime);
-                    client.println(F("</h3></body></html>"));
-                    break;
-                }
-                if (c == '\n') {
-                    // when starts reading a new line
-                    blank_line = true;
-                }
-                else if (c != '\r') {
-                    // when finds a character on the current line
-                    blank_line = false;
-                }
-            }
-        }
-        // closing the client connection
-        delay(1);
-        client.stop();
-        Serial.println(F("WebClient disconnected."));
     }
 }
 
@@ -608,10 +555,6 @@ void loop() {
         ledState = false;
         digitalWrite(LED_BUILTIN, !ledState);
     }
-
-// Web Client
-// Listening for new clients & serve them
-    webClient();
 
 // update the config file if required
     if(cfgChangeFlag) {
